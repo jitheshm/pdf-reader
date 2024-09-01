@@ -5,6 +5,8 @@ import Navbar from '../components/Navbar'
 
 function Landing() {
   const [loading, setLoading] = useState(false)
+  const [fileName, setFileName] = useState<string | null>(null)
+  const [isPdfPreview, setIsPdfPreview] = useState(false)
   return (
     <>
       <div>
@@ -12,7 +14,10 @@ function Landing() {
         {
           loading && <Loading />
         }
-        <FileUpload setLoading={setLoading} />
+        {
+          !isPdfPreview && <FileUpload setLoading={setLoading} setFileName={setFileName} setIsPdfPreview={setIsPdfPreview} />
+        }
+
       </div>
     </>
   )

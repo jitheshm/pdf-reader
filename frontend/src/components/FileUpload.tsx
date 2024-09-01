@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
 import { IoMdCloudUpload } from "react-icons/io";
 import { z } from 'zod';
-import axios from 'axios';
+import instance from '../axios';
 
 const fileUploadSchema = z.object({
     file: z
@@ -14,7 +14,13 @@ const fileUploadSchema = z.object({
         }),
 });
 
-const FileUpload = ({ setLoading }: { setLoading: React.Dispatch<React.SetStateAction<boolean>> }) => {
+interface fileUploadProps {
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setFileName: React.Dispatch<React.SetStateAction<string | null>>,
+    setIsPdfPreview: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const FileUpload = ({ setLoading, setFileName, setIsPdfPreview }: fileUploadProps) => {
     const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -47,7 +53,7 @@ const FileUpload = ({ setLoading }: { setLoading: React.Dispatch<React.SetStateA
         if (!validation.success) {
             setLoading(false)
             setError(validation.error.errors[0]?.message || 'Invalid file');
-            
+
             return;
         } else {
             setError(null)
@@ -55,14 +61,17 @@ const FileUpload = ({ setLoading }: { setLoading: React.Dispatch<React.SetStateA
         const formData = new FormData();
         formData.append('file', file);
 
-        axios.post(import.meta.env.VITE_SERVER_URL + '/api/extract', formData, {
+        instance.post('/api/pdf/extract', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         })
             .then((res) => {
-                console.log(res.data.data);
+                console.log(res.data);
+                setFileName(res.data.fileName)
                 setLoading(false)
+                setIsPdfPreview(true)
+
 
             })
             .catch((err) => {

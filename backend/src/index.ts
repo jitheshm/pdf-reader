@@ -5,6 +5,7 @@ import userRouter from './routes/user';
 import dbConnect from './config/dbConnect';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import pdfRouter from './routes/pdf';
 
 dotenv.config();
 
@@ -14,12 +15,16 @@ const PORT = process.env.PORT || 3000;
 // const userBuildPath = path.join(__dirname, '../../frontend/dist');
 
 app.use(express.json());
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    credentials: true
+}));
 app.use(cookieParser());
 // app.use('/', express.static(userBuildPath));
 dbConnect()
 
 app.use('/api/user', userRouter);
+app.use('/api/pdf',pdfRouter)
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(400).json({ error: err.message });
