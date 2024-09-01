@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { z } from 'zod';
 
@@ -30,7 +31,14 @@ const Signup: React.FC = () => {
         try {
             SignupSchema.parse(formData);
             console.log('Form is valid:', formData);
-            
+            axios.post(import.meta.env.VITE_SERVER_URL + '/api/user/signup', formData).then((res) => {
+                console.log(res);
+
+            }).catch((err) => {
+                console.log(err);
+
+            })
+
         } catch (err) {
             if (err instanceof z.ZodError) {
                 const errorMessages = err.errors.reduce((acc, error) => {
