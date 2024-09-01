@@ -22,6 +22,8 @@ const Signup: React.FC = () => {
 
     const [errors, setErrors] = useState<Partial<Record<keyof SignupFormData, string>>>({});
 
+    
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
