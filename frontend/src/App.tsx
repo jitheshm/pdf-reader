@@ -1,8 +1,9 @@
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
-import Signup from './components/Signup'
 import Landing from './pages/Landing'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 
 function App() {
 
@@ -10,6 +11,10 @@ function App() {
     {
       path: "/signup",
       element: <Signup />
+    },
+    {
+      path: "/login",
+      element: <Login />
     },
     {
       path: "/",
