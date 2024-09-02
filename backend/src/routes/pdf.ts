@@ -6,7 +6,8 @@ import pdfFinder from "../controllers/pdfFinder";
 
 const pdfRouter = Router();
 
-pdfRouter.post('/extract',decodeToken,upload.single("file"), pdfExtract)
-pdfRouter.get('/pdfname/:pdfname',decodeToken,pdfFinder)
+pdfRouter.post('/new', decodeToken, upload.single("file"), pdfExtract)
+pdfRouter.get('/pdfname/:pdfname', decodeToken, pdfFinder)
+pdfRouter.get('/pdfname/:pdfname', decodeToken, pdfFinder)
 
 export default pdfRouter;

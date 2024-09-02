@@ -61,7 +61,7 @@ const FileUpload = ({ setLoading, setFileName, setIsPdfPreview }: fileUploadProp
         const formData = new FormData();
         formData.append('file', file);
 
-        instance.post('/api/pdf/extract', formData, {
+        instance.post('/api/pdf/new', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
