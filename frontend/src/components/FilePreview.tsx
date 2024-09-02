@@ -20,6 +20,9 @@ function FilePreview({ fileName }: FilePreviewProps) {
     const [file, setFile] = useState<string | null>(null)
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [numPages, setNumPages] = useState<number>();
+    const [selectedPages, setSelectedPages] = useState<number[]>([]);
+    const [error, setError] = useState<string | null>(null)
+
     useEffect(() => {
         instance.get(`/api/pdf/pdfname/${fileName}`, { responseType: 'blob' }).then((response) => {
             const url = URL.createObjectURL(response.data);
@@ -54,6 +57,33 @@ function FilePreview({ fileName }: FilePreviewProps) {
         })
     }
 
+    const handleCheckboxChange = () => {
+        if (selectedPages.includes(pageNumber)) {
+            setSelectedPages((prev) => {
+                return (
+                    prev.filter((ele) => {
+                        return ele != pageNumber
+                    })
+                )
+            })
+        }
+        else {
+            setSelectedPages((prev) => {
+                return [...prev, pageNumber]
+            })
+        }
+    }
+
+    const handleSubmit = () => {
+        if (selectedPages.length > 0) {
+            setError(null)
+            console.log(selectedPages);
+
+        } else {
+            setError('Select atleast 1 page')
+        }
+    }
+
     return (
         <div>
             <p className='mt-5 text-center text-2xl font-bold'>PDF preview</p>
@@ -76,6 +106,14 @@ function FilePreview({ fileName }: FilePreviewProps) {
                 </nav>
 
                 <div >
+                    <div className='mx-2 flex gap-4 items-center'>
+                        <input id="link-checkbox" type="checkbox" checked={selectedPages.includes(pageNumber)} onChange={handleCheckboxChange} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                        <div>
+                            {
+                                selectedPages.includes(pageNumber) && selectedPages.indexOf(pageNumber) + 1
+                            }
+                        </div>
+                    </div>
                     <Document
                         file={file}
                         onLoadSuccess={onLoadSuccess}
@@ -89,6 +127,14 @@ function FilePreview({ fileName }: FilePreviewProps) {
                 <p className='text-center'>
                     Page {pageNumber} of {numPages}
                 </p>
+            </div>
+            <div className='text-center my-2'>
+                <div className='my-2'>
+                    {
+                        error && <p className='text-red-700'>{error}</p>
+                    }
+                </div>
+                <button type="button" onClick={handleSubmit} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Extract and Create New Pdf</button>
             </div>
         </div>
     )
