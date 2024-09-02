@@ -10,13 +10,15 @@ import { FaChevronRight } from "react-icons/fa6";
 
 interface FilePreviewProps {
     fileName: string
+    setOutputFile: React.Dispatch<React.SetStateAction<string | null>>
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.mjs',
     import.meta.url,
 ).toString();
 
-function FilePreview({ fileName }: FilePreviewProps) {
+function FilePreview({ fileName, setOutputFile, setLoading }: FilePreviewProps) {
     const [file, setFile] = useState<string | null>(null)
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [numPages, setNumPages] = useState<number>();
@@ -76,8 +78,18 @@ function FilePreview({ fileName }: FilePreviewProps) {
 
     const handleSubmit = () => {
         if (selectedPages.length > 0) {
+            setLoading(true)
             setError(null)
             console.log(selectedPages);
+            instance.post('/api/pdf/extract', {
+                pageNumbers: selectedPages,
+                fileName
+            }, { responseType: 'blob' }).then((res) => {
+                const url = URL.createObjectURL(res.data);
+                setLoading(false)
+                setOutputFile(url)
+
+            })
 
         } else {
             setError('Select atleast 1 page')
