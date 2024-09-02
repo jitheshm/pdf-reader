@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import FileUpload from '../components/FileUpload'
 import Loading from '../components/Loading'
 import Navbar from '../components/Navbar'
+import FilePreview from '../components/FilePreview'
 
 function Landing() {
   const [loading, setLoading] = useState(false)
@@ -16,6 +17,9 @@ function Landing() {
         }
         {
           !isPdfPreview && <FileUpload setLoading={setLoading} setFileName={setFileName} setIsPdfPreview={setIsPdfPreview} />
+        }
+        {
+          isPdfPreview && fileName && <FilePreview fileName={fileName} />
         }
 
       </div>
