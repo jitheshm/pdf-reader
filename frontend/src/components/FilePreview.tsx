@@ -37,7 +37,7 @@ function FilePreview({ fileName, setOutputFile, setLoading }: FilePreviewProps) 
         })
     }, [])
 
-    const onLoadSuccess = ({ numPages }) => {
+    const onLoadSuccess = ({ numPages }:{numPages:number}) => {
         setNumPages(numPages);
     };
 

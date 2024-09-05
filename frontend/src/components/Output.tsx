@@ -1,4 +1,3 @@
-import React from 'react'
 import { FaArrowDown } from "react-icons/fa";
 
 function Output({ outputFile }: { outputFile: string | null }) {

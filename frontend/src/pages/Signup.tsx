@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SignupComponent from '../components/Signup';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';

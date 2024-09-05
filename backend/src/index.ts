@@ -12,15 +12,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// const userBuildPath = path.join(__dirname, '../../frontend/dist');
+const userBuildPath = path.join(__dirname, '../../frontend/dist');
 
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:5173', 
+    origin: true, 
     credentials: true
 }));
 app.use(cookieParser());
-// app.use('/', express.static(userBuildPath));
+app.use('/', express.static(userBuildPath));
 dbConnect()
 
 app.use('/api/user', userRouter);
@@ -31,17 +31,17 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 });
 
-// app.get("/*", function (req, res) {
+app.get("/*", function (req, res) {
 
-//   res.sendFile(
-//     path.join(__dirname, "../../frontend/dist/index.html"),
-//     function (err) {
-//       if (err) {
-//         res.status(500).send(err);
-//       }
-//     }
-//   );
-// });
+  res.sendFile(
+    path.join(__dirname, "../../frontend/dist/index.html"),
+    function (err) {
+      if (err) {
+        res.status(500).send(err);
+      }
+    }
+  );
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

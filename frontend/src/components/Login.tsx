@@ -18,6 +18,7 @@ function Login() {
         password: '',
     });
     const [errors, setErrors] = useState<Partial<LoginData>>({});
+    const [creditionalError, setCreditionalError] = useState<string | null>(null)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -44,11 +45,12 @@ function Login() {
         } else {
             setErrors({});
             console.log('Form data is valid:', result.data);
-            instance.post('/api/user/login', formData).then((res) => {
+            instance.post('/api/user/login', formData).then(() => {
                 dispatch(verify())
                 navigate('/')
             }).catch((err) => {
                 console.log(err);
+                setCreditionalError(err.response.data.message)
 
             })
         }
@@ -65,6 +67,11 @@ function Login() {
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Login to your account
                 </h2>
+                {
+                    creditionalError && <p className='text-red-600 text-center'>
+                        {creditionalError}
+                    </p>
+                }
             </div>
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" onSubmit={handleSubmit}>
