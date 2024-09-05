@@ -3,7 +3,7 @@ import { z } from 'zod';
 import instance from '../axios';
 import { useDispatch } from 'react-redux';
 import { verify } from '../features/user/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const loginSchema = z.object({
     email: z.string().email({ message: "Invalid email address" }),
@@ -119,6 +119,13 @@ function Login() {
                         </button>
                     </div>
                 </form>
+
+                <p className="mt-10 text-center text-sm text-gray-500">
+                    Don't have an account?{' '}
+                    <Link to="/signup" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                        Sign up here
+                    </Link>
+                </p>
             </div>
         </div>
     );

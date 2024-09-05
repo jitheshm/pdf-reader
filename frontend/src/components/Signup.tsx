@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { z } from 'zod';
 import instance from '../axios';
+import { Link } from 'react-router-dom';
 
 const SignupSchema = z.object({
     email: z.string().email('Invalid email address'),
@@ -128,6 +129,12 @@ const Signup: React.FC = () => {
                         </button>
                     </div>
                 </form>
+                <p className="mt-10 text-center text-sm text-gray-500">
+                    Already have an account?{' '}
+                    <Link to="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                        Login here
+                    </Link>
+                </p>
             </div>
         </div>
     );
